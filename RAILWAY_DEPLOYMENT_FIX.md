@@ -88,3 +88,21 @@ The deployment should now work with the improved configuration!
 - Removed: `nixpacks.toml` and `backend/nixpacks.toml`
 
 The deployment should now work without Nixpacks configuration conflicts!
+
+## Healthcheck Fix
+
+**Issue**: Build succeeded but healthcheck was failing - Django application not responding.
+
+**Solution**:
+- Updated healthcheck path from `/api/` to `/api/health/` (more specific endpoint)
+- Enhanced start.sh script with better logging and error handling
+- Added Django system check before starting server
+- Improved Gunicorn configuration with proper logging
+- Set DEBUG=False by default for production
+
+**Files Updated**:
+- `railway.json`: Updated healthcheck path to `/api/health/`
+- `start.sh`: Added debugging, Django check, and better Gunicorn config
+- `backend/ipswich_retail/settings.py`: Set DEBUG=False by default
+
+The deployment should now start successfully and pass healthchecks!
