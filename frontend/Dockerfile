@@ -8,13 +8,19 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm i
+RUN npm install
 
 # Copy source code
 COPY . .
 
-# Expose port
-EXPOSE 3000
+# Build the application
+RUN npm run build
 
-# Start development server
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000"]
+# Install serve globally
+RUN npm install -g serve
+
+# Expose port (Railway will set the PORT environment variable)
+EXPOSE $PORT
+
+# Start production server
+CMD ["sh", "-c", "serve -s dist -p $PORT"]
