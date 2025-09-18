@@ -12,11 +12,11 @@ const getApiBaseUrl = () => {
   if (import.meta.env.PROD) {
     // If we're on Railway, try to use the backend service URL
     // You'll need to replace this with your actual backend Railway URL
-    return 'https://ipswich-retail-shop-production.railway.app/api';
+    return 'https://aneesali009.pythonanywhere.com/api';
   }
   
   // Default to localhost for development
-  return 'http://localhost:8000/api';
+  return 'https://aneesali009.pythonanywhere.com/api';
 };
 
 const API_BASE_URL = getApiBaseUrl();
