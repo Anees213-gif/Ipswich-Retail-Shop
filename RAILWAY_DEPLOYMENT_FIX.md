@@ -4,7 +4,19 @@
 
 The deployment was failing with "Error creating build plan with Railpack" due to several configuration issues:
 
-### 1. Updated Railway Configuration Files
+### Root Cause
+Railway was trying to deploy from the root directory of your monorepo but couldn't find the necessary files to determine the deployment strategy. The error "Script start.sh not found" indicated that Railway was looking for deployment files at the root level.
+
+### 1. Created Root-Level Configuration Files
+
+**Root Level Files**:
+- `railway.json`: Main Railway configuration pointing to backend service
+- `start.sh`: Root-level start script that navigates to backend directory
+- `nixpacks.toml`: Nixpacks configuration for Python detection
+- `Procfile`: Alternative deployment method
+- `requirements.txt`: Root-level requirements file that includes backend requirements
+
+### 2. Updated Railway Configuration Files
 
 **Backend (`backend/railway.json`)**:
 - Fixed start command to use proper Django deployment with Gunicorn
@@ -59,3 +71,20 @@ If deployment still fails:
 4. Check that static files are collected properly
 
 The deployment should now work with the improved configuration!
+
+## Latest Fix (Nixpacks Error)
+
+**Issue**: `undefined variable 'pip'` error in Nixpacks configuration.
+
+**Solution**: 
+- Removed `nixpacks.toml` files that were causing conflicts
+- Simplified Railway configuration to use `start.sh` script
+- Added `runtime.txt` for Python version detection
+- Let Railway auto-detect Python and handle pip installation
+
+**Files Updated**:
+- `railway.json`: Simplified to use start.sh script
+- `runtime.txt`: Added for Python version detection
+- Removed: `nixpacks.toml` and `backend/nixpacks.toml`
+
+The deployment should now work without Nixpacks configuration conflicts!

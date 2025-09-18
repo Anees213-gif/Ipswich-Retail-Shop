@@ -4,7 +4,7 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "cd backend && python manage.py migrate && python manage.py collectstatic --noinput && python manage.py load_sample_data && gunicorn --bind 0.0.0.0:$PORT ipswich_retail.wsgi:application",
+    "startCommand": "chmod +x start.sh && ./start.sh",
     "healthcheckPath": "/api/",
     "healthcheckTimeout": 300,
     "restartPolicyType": "ON_FAILURE",
