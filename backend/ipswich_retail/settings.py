@@ -89,6 +89,10 @@ DATABASES = {
     }
 }
 
+# Ensure database directory exists
+import os
+os.makedirs(os.path.dirname(DATABASES['default']['NAME']), exist_ok=True)
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {

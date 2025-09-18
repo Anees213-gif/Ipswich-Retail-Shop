@@ -5,9 +5,29 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import JsonResponse
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
+def home_view(request):
+    """Main page view for the root URL"""
+    return JsonResponse({
+        'message': 'Welcome to Ipswich Retail API',
+        'version': '1.0.0',
+        'status': 'healthy',
+        'endpoints': {
+            'api_root': '/api/',
+            'categories': '/api/categories/',
+            'products': '/api/products/',
+            'orders': '/api/orders/',
+            'customers': '/api/customers/',
+            'admin': '/admin/',
+            'api_docs': '/api/docs/',
+            'health_check': '/api/health/',
+        }
+    })
+
 urlpatterns = [
+    path('', home_view, name='home'),
     path('admin/', admin.site.urls),
     path('api/', include('apps.core.urls')),
     path('api/products/', include('apps.products.urls')),
