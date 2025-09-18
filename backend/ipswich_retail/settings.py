@@ -15,7 +15,26 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-this-in-produc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,0.0.0.0,*.railway.app', cast=lambda v: [s.strip() for s in v.split(',')])
+# Railway proxy headers
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Prefer explicit list via env, but fall back to sensible defaults for Railway
+_raw = os.getenv("ALLOWED_HOSTS", "")
+if _raw:
+    ALLOWED_HOSTS = [h.strip() for h in _raw.split(",") if h.strip()]
+else:
+    # Allow common Railway hosts; add your custom domains here if any
+    ALLOWED_HOSTS = [
+        "localhost",
+        "127.0.0.1",
+        ".railway.app",
+        ".railway.internal",
+        # add your custom domain here, e.g. "api.yourdomain.com"
+    ]
+
+# TEMP SAFETY SWITCH (only for quick triage, then remove):
+if os.getenv("ALLOW_ALL_HOSTS") == "1":
+    ALLOWED_HOSTS = ["*"]
 
 # Application definition
 DJANGO_APPS = [
