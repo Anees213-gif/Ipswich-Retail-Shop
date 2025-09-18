@@ -106,3 +106,28 @@ The deployment should now work without Nixpacks configuration conflicts!
 - `backend/ipswich_retail/settings.py`: Set DEBUG=False by default
 
 The deployment should now start successfully and pass healthchecks!
+
+## Simplified Deployment Approach
+
+**Issue**: Healthcheck still failing despite successful build.
+
+**Solution**:
+- Created simplified startup script (`simple_start.sh`) with better error handling
+- Updated Railway configuration to use the simplified script
+- Simplified health check endpoint to reduce potential failure points
+- Added database directory creation to prevent SQLite issues
+- Reduced Gunicorn workers to 1 for better stability
+
+**Files Updated**:
+- `railway.json`: Updated to use `simple_start.sh`
+- `simple_start.sh`: New simplified startup script with better logging
+- `backend/apps/core/views.py`: Simplified health check endpoint
+- `backend/ipswich_retail/settings.py`: Added database directory creation
+
+**Key Changes**:
+- Better error handling and logging in startup script
+- Django deployment check before starting server
+- Simplified health check without complex system metrics
+- Single worker Gunicorn configuration for stability
+
+The deployment should now start successfully with better error visibility!

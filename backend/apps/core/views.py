@@ -33,7 +33,7 @@ def api_root(request):
 @api_view(['GET'])
 def health_check(request):
     """
-    Comprehensive health check endpoint for monitoring and deployment.
+    Simple health check endpoint for monitoring and deployment.
     """
     try:
         # Test database connection
@@ -42,25 +42,6 @@ def health_check(request):
             db_status = "connected"
     except Exception as e:
         db_status = f"error: {str(e)}"
-    
-    # Get system information
-    try:
-        memory_info = psutil.virtual_memory()
-        disk_info = psutil.disk_usage('/')
-        system_info = {
-            'memory': {
-                'total': memory_info.total,
-                'available': memory_info.available,
-                'percent': memory_info.percent
-            },
-            'disk': {
-                'total': disk_info.total,
-                'free': disk_info.free,
-                'percent': (disk_info.used / disk_info.total) * 100
-            }
-        }
-    except Exception:
-        system_info = None
     
     return Response({
         'status': 'healthy',
@@ -71,7 +52,6 @@ def health_check(request):
             'django': 'running',
             'database': db_status,
         },
-        'system': system_info,
         'environment': {
             'debug': settings.DEBUG,
             'allowed_hosts': settings.ALLOWED_HOSTS,
